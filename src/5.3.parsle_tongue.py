@@ -5,7 +5,8 @@ CHUNK_SIZE = 1024
 
 def parsle_tongue():
     # Define a regex pattern to match secret messages
-    file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logo.jpg')
+    file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../src/logo.jpg'))
+
     message_pattern = re.compile(r'[a-z]{5,}!')
 
     def read_in_chunks(file):
