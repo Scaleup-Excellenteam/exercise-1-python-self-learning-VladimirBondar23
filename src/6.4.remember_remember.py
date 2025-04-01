@@ -1,6 +1,5 @@
 import os
 from PIL import Image
-import numpy as np
 def remember_remember(image_path):
     image = Image.open(image_path).convert("L")  # Convert to grayscale
 
