@@ -3,7 +3,6 @@ import random
 
 
 def no_vinnigrete(start_date, end_date):
-
     try:
 
     # Convert strings to datetime objects
@@ -21,11 +20,6 @@ def no_vinnigrete(start_date, end_date):
             print(random_date.strftime("%Y-%m-%d"))
     except ValueError as e:
         print("Please enter a valid date ", e)
-
-
-
-
-
 
 if __name__ == '__main__':
     print(no_vinnigrete())

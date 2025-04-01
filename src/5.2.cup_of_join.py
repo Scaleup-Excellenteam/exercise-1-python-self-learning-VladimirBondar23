@@ -8,7 +8,5 @@ def cup_of_join(*lists, sep = None):
 
     return result if len(result) !=0 else None  #return not including the first separator or None if it's empty
 
-
-
 if __name__ == '__main__':
     print(cup_of_join([1, 2], [8], [9, 5, 6]))

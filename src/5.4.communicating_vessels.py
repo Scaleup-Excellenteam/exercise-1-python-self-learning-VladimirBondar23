@@ -6,7 +6,6 @@ def interleave(*iterables):
     # Extract elements from tuples and filter out the None values
     return [item for tup in zipped for item in tup if item is not None]
 
-
 def generator_interleave(*iterables):
     # Use zip_longest to handle unequal length iterables and fill with None by default
     for tup in zip_longest(*iterables, fillvalue=None):

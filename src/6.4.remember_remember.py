@@ -21,8 +21,6 @@ def remember_remember(image_path):
 
     return decoded_message
 
-
-
 if __name__ == '__main__':
     relative_path = "Notebooks/content/week06/resources/code.png"  # relative path
     full_path = os.path.abspath(relative_path)  # Convert to absolute path

@@ -5,7 +5,5 @@ def group_by(func, iterable):
     # to find all elements which satisfy the result
     return {result: list(filter(lambda element: func(element) == result, iterable)) for result in set_of_results}
 
-
-
 if __name__ == '__main__':
     print(group_by(len, ["hi", "bye", "yo", "try"]))

@@ -1,9 +1,5 @@
 import string
 
-
-
-
-
 def long_cat_is_long(txt):
     text = txt.lower().split()  #split the text and convert to lowercase
     text = list(map(lambda word: ''.join(char for char in word if char.isalpha()), text)) #remove non-alphabetic symbols
