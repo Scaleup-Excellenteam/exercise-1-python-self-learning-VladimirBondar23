@@ -6,7 +6,7 @@ CHUNK_SIZE = 1024
 def parsle_tongue():
     # Define a regex pattern to match secret messages
     file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logo.jpg')
-    message_pattern = re.compile(r'[a-z]{5,}')
+    message_pattern = re.compile(r'[a-z]{5,}!')
 
     def read_in_chunks(file):
         """Generator to read file in chunks."""
@@ -24,7 +24,7 @@ def parsle_tongue():
                 text = chunk.decode('ascii', errors='ignore')
                 # Find and yield all secret messages in the chunk
                 for match in message_pattern.findall(text):
-                    result.append(match)
+                    result.append(match[:-1])
             except UnicodeDecodeError:
                 continue
     return result
