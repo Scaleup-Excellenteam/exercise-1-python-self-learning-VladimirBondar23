@@ -2,22 +2,19 @@ import os
 from PIL import Image
 import numpy as np
 def remember_remember(image_path):
-    image = Image.open(image_path)
+    image = Image.open(image_path).convert("L")  # Convert to grayscale
 
-    # Convert the image to a numpy array
-    image_matrix = np.array(image)
-
-    # Initialize an empty string to store the decoded message
+    width, height = image.size  # Get image dimensions
     decoded_message = ""
 
     # Iterate through the columns of the image
-    for col in range(image_matrix.shape[1]):
+    for col in range(width):
         # Find the row where the pixel is black
-        for row in range(image_matrix.shape[0]):
-            if image_matrix[row, col] == 1:  # Black pixel (value 1)
-                # Convert the row number to a character and add to the message
-                decoded_message += chr(row)
-                break
+        for row in range(height):
+            pixel_value = image.getpixel((col, row))  # Get grayscale pixel value
+            if pixel_value == 1:  # Black pixel
+                decoded_message += chr(row)  # Convert row index to character
+                break  # Move to next column
 
     return decoded_message
 
