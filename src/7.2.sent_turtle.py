@@ -1,7 +1,11 @@
+"""
+A Post Office simulation that allows users to send, read, and search messages.
+"""
+
 class PostOffice:
     """A Post Office class. Allows users to message each other.
 
-    :ivar int message_id: Incremental id of the last message sent.
+    :ivar int message_id: Incremental ID of the last message sent.
     :ivar dict boxes: Users' inboxes.
 
     :param list usernames: Users for which we should create PO Boxes.
@@ -16,73 +20,72 @@ class PostOffice:
 
         :param str sender: The message sender's username.
         :param str recipient: The message recipient's username.
+        :param str title: The title of the message.
         :param str message_body: The body of the message.
-        :param urgent: The urgency of the message.
-        :type urgent: bool, optional
-        :return: The message ID, auto incremented number.
+        :param bool urgent: Whether the message is urgent (default: False).
+        :return: The message ID, auto-incremented number.
         :rtype: int
-        :raises KeyError: if the recipient does not exist.
+        :raises KeyError: If the recipient does not exist.
         """
-        user_box = self.boxes[recipient]
-        self.message_id = self.message_id + 1
+        if recipient not in self.boxes:
+            raise KeyError(f"Recipient '{recipient}' does not exist.")
+
+        self.message_id += 1
         message_details = {
             'id': self.message_id,
+            'title': title,
             'body': message_body,
             'sender': sender,
-            'unread' : True, # this allows to sort messages which are read and unread
-            'title' : title
+            'unread': True  # This allows sorting messages into read and unread
         }
         if urgent:
-            user_box.insert(0, message_details)
+            self.boxes[recipient].insert(0, message_details)
         else:
-            user_box.append(message_details)
+            self.boxes[recipient].append(message_details)
+
         return self.message_id
 
-    def search_inbox(self, username, string):
+    def search_inbox(self, username, search_string):
         """
-        Search for all messages which contain string
-        :param str username:
-        :param str string:
-        :return: a list of matching messages
+        Search for messages in the user's inbox that contain a specific string.
+
+        :param str username: The username whose inbox is being searched.
+        :param str search_string: The string to search for in messages.
+        :return: A list of matching messages.
         """
-        list_of_messages = self.boxes[username]
-        return [message for message in list_of_messages if string.lower() in message.get('body').lower() + message.get('title').lower()]
+        return [
+            message for message in self.boxes.get(username, [])
+            if search_string.lower() in (message['title'] + message['body']).lower()
+        ]
 
     def read_inbox(self, username, n=0):
         """
-        Returns n first messages in user's inbox. Marks them as read
-        :param str username:
-        :param int n:
-        :return: the list of n first messages or all of them if n not provided
+        Retrieve and mark as read the first `n` messages in a user's inbox.
+
+        :param str username: The username whose inbox is being read.
+        :param int n: The number of messages to read (0 returns all).
+        :return: A list of messages.
         """
-        n_messages = [] #initialize a returning list
+        messages = self.boxes.get(username, [])
 
         if n == 0:
-            n = len(self.boxes[username])   #if n not provided, we will return all messages
+            n = len(messages)  # If n is 0, return all messages
 
-        for i in range(n):
-            message = self.boxes[username][i]
-            message_copy = message.copy()       #a copy of message for it to be displayed as unread
+        read_messages = []
+        for i in range(min(n, len(messages))):  # Avoid index errors
+            message_copy = messages[i].copy()  # Create a copy to mark as read
             message_copy['unread'] = False
-            n_messages += [message_copy]        #add it to returning list
-            self.boxes[username][i] = message_copy
+            read_messages.append(message_copy)
+            self.boxes[username][i] = message_copy  # Update original message status
 
-        return n_messages
+        return read_messages
+
 
 if __name__ == '__main__':
     post_office = PostOffice(['John', 'Jane', 'Mary'])
-    post_office.send_message('John', 'Mary', 'Hello Mary')
-    post_office.send_message('Mary', 'John', 'Hello John')
-    post_office.send_message('John', 'Mary', 'How is it going?')
+    post_office.send_message('John', 'Mary', 'Hello', 'Hello Mary')
+    post_office.send_message('Mary', 'John', 'Reply', 'Hello John')
+    post_office.send_message('John', 'Mary', 'Checking in', 'How is it going?')
+
     print(post_office.read_inbox('Mary'))
     print(post_office.search_inbox('Mary', 'Hello'))
-
-
-
-
-
-
-
-
-
-
